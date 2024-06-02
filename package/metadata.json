@@ -1,0 +1,26 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "André Alves"
+            },
+            {
+                "Email": "luisbocanegra17b@gmail.com",
+                "Name": "Luis Bocanegra"
+            }
+        ],
+        "BugReportUrl": "https://github.com/andredla/win_audio/issues",
+        "Description": "Window event audio",
+        "EnabledByDefault": true,
+        "Id": "win_audio",
+        "License": "GPL",
+        "Name": "Win audio",
+        "Icon": "preferences-system-windows-script-test",
+        "Version": "1.1",
+        "Website": "https://github.com/andredla/win_audio"
+    },
+    "X-Plasma-API": "declarativescript",
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted"
+}
