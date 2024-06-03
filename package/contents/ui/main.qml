@@ -103,12 +103,6 @@ Item {
     function setup(window) {
         if (!win_type_normal(window)) return;
 
-        shell.audio(win_open_sound);
-
-        window.closed.connect(() => {
-            shell.audio(win_close_sound);
-        });
-
         window.maximizedChanged.connect(() => {
             if (window.maximized) {
                 shell.audio(win_max_sound);
@@ -133,7 +127,15 @@ Item {
     }
 
     Component.onCompleted: {
-        Workspace.windowAdded.connect(setup);
+        Workspace.windowAdded.connect(w => {
+            if (!win_type_normal(w)) return;
+            shell.audio(win_open_sound);
+            setup(w);
+        });
+        Workspace.windowRemoved.connect(w => {
+            if (!win_type_normal(w)) return;
+            shell.audio(win_close_sound);
+        });
         Workspace.currentDesktopChanged.connect(desk_change);
         Workspace.windowList().forEach(setup);
         // Workspace.clientRestored.connect(win_res);
