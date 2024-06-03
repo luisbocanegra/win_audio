@@ -76,7 +76,7 @@ Item {
 		var ret = false;
 		if (client.minimizable && client.closeable && client.maximizable && client.resizeable && client.moveable && client.moveableAcrossScreens)
 		{
-			if (!client.modal && !client.specialWindow && !client.transient && !client.dialog && !client.notification && !client.popupWindow)
+			if (!client.specialWindow && !client.transient && !client.dialog && !client.notification)
 			{
 				ret = true;
 			}
