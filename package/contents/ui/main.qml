@@ -65,7 +65,7 @@ Item {
 
         function audio(cmd) {
             console.error(cmd);
-            shell.connectSource("paplay --volume="+(65536 * cmd[1] / 100)+" "+cmd[0]);
+                shell.connectSource("paplay --volume="+(65536 * cmd[1] / 100)+" "+cmd[0]+" &");
         }
 
         signal exited(string cmd, int exitCode, int exitStatus, string stdout, string stderr)
@@ -74,7 +74,7 @@ Item {
 	function win_type_normal(client)
 	{
 		var ret = false;
-		if (client.minimizable && client.closeable && client.maximizable && client.resizeable && client.moveable && client.moveableAcrossScreens)
+        if (client.minimizable && client.closeable && client.maximizable && client.resizeable && client.moveable && client.moveableAcrossScreens)
 		{
 			if (!client.specialWindow && !client.transient && !client.dialog && !client.notification)
 			{
