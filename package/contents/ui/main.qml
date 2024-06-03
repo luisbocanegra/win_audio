@@ -94,7 +94,10 @@ Item {
 
     function desk_change(desk, client)
     {
-        shell.audio(desk_change_sound);
+        // You can format it as /home/niko/Images/HypnOS/Audio/tab%1.ogg
+        // Where %1 is the current desktop from the left starting at 1
+        var x11DesktopNumber = Workspace.currentDesktop.x11DesktopNumber;
+        shell.audio([desk_change_sound[0].arg(x11DesktopNumber), desk_change_sound[1]]);
     }
 
     function setup(window) {
