@@ -65,7 +65,7 @@ Item {
 
         function audio(cmd) {
             console.error(cmd);
-            shell.connectSource("paplay --volume="+(65536 * cmd[1] / 100)+" "+cmd[0]);
+            shell.connectSource("paplay --volume="+(65536 * cmd[1] / 100)+" "+cmd[0]+" &");
         }
 
         signal exited(string cmd, int exitCode, int exitStatus, string stdout, string stderr)
@@ -74,9 +74,9 @@ Item {
 	function win_type_normal(client)
 	{
 		var ret = false;
-		if (client.minimizable && client.closeable && client.maximizable && client.resizeable && client.moveable && client.moveableAcrossScreens)
+        if (client.minimizable && client.closeable && client.maximizable && client.resizeable && client.moveable && client.moveableAcrossScreens)
 		{
-			if (!client.modal && !client.specialWindow && !client.transient && !client.dialog && !client.notification && !client.popupWindow)
+			if (!client.specialWindow && !client.transient && !client.dialog && !client.notification)
 			{
 				ret = true;
 			}
@@ -94,17 +94,14 @@ Item {
 
     function desk_change(desk, client)
     {
-        shell.audio(desk_change_sound);
+        // You can format it as /home/niko/Images/HypnOS/Audio/tab%1.ogg
+        // Where %1 is the current desktop from the left starting at 1
+        var x11DesktopNumber = Workspace.currentDesktop.x11DesktopNumber;
+        shell.audio([desk_change_sound[0].arg(x11DesktopNumber), desk_change_sound[1]]);
     }
 
     function setup(window) {
         if (!win_type_normal(window)) return;
-
-        shell.audio(win_open_sound);
-
-        window.closed.connect(() => {
-            shell.audio(win_close_sound);
-        });
 
         window.maximizedChanged.connect(() => {
             if (window.maximized) {
@@ -130,7 +127,15 @@ Item {
     }
 
     Component.onCompleted: {
-        Workspace.windowAdded.connect(setup);
+        Workspace.windowAdded.connect(w => {
+            if (!win_type_normal(w)) return;
+            shell.audio(win_open_sound);
+            setup(w);
+        });
+        Workspace.windowRemoved.connect(w => {
+            if (!win_type_normal(w)) return;
+            shell.audio(win_close_sound);
+        });
         Workspace.currentDesktopChanged.connect(desk_change);
         Workspace.windowList().forEach(setup);
         // Workspace.clientRestored.connect(win_res);
